@@ -97,5 +97,21 @@ MACRO(SETUP_APPLICATION)
     ## Generate a rc file
     CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/Resource.rc.in ${CMAKE_BINARY_DIR}/${MODULE_GROUP_NAME}-Resource.rc)
 
-    
+    ## Add paths of packages to link directories
+    LINK_DIRECTORIES(${LIB_DIRS}
+        $<$<CONFIG:RELEASE>:${CMAKE_INSTALL_PREFIX}/Release/lib>
+        $<$<CONFIG:DEBUG>:${CMAKE_INSTALL_PREFIX}/DEBUG/lib>
+    )
+
+    ADD_EXECUTABLE(${APPLICATION_NAME}
+        ${APPLICATION_INCLUDE}
+        ${APPLICATION_INC}
+        ${APPLICATION_SRC}
+        ${_APPLICATION_MOC_CPP}
+        ${_APPLICATION_UI_CPP}
+        ${_APPLICATION_QRC_SRCS}
+        ${CMAKE_BINARY_DIR}/${MODULE_GROUP_NAME}-Resource.rc
+    )
+
+
 ENDMACRO(SETUP_APPLICATION)
