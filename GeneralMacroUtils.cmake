@@ -320,3 +320,23 @@ MACRO(SETUP_LIBRARY)
         )
     ENDIF()
 ENDMACRO(SETUP_LIBRARY)
+
+MACRO(SETUP_THIRDPARTY_PACKAGE _UPDATE_PKG) # The argument is to specify whether update thirdparty package
+    SET(_VALID_PACKAGE_CONFIG "Debug;Release")
+    IF(_UPDATE_PKG)
+        SET(_UPDATE_PKG "-u")
+    ELSE()
+        SET(_UPDATE_PKG "")
+    ENDIF()
+    FOREACH(_CONFIG ${CMAKE_CONFIGURATION_TYPES})
+        SET(CONAN_CONFIG_LOCATION ${CMAKE_BINARY_DIR}/deploy/conan/${MODULE_GROUP_NAME}/{_CONFIG})
+        CONFIGURE_FILE(${CMAKE_SOURCE_DIR}/../../${MODULE_GROUP_NAME}/confile.py.in
+            ${CONAN_CONFIG_LOCATION}/conanfile.py @ONLY
+        )
+        IF(${_CONFIG} IN_LIST _VALID_PACKAGE_CONFIG)
+            EXECUTE_PROCESS(
+                conan install ${CONAN_CONFIG_LOCATION} -s build_type=${_CONFIG} -if ${CMAKE_BINARY_DIR} ${_UPDATE_PKG} --remote=gitlab
+            )
+        ENDIF()
+    ENDFOREACH()
+ENDMACRO(SETUP_THIRDPARTY_PACKAGE)
