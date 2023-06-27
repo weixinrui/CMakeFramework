@@ -1,0 +1,56 @@
+#[=======================================================[.rst:
+    SettingTemplate for the CMake framework.
+#]=======================================================]
+
+SET(GLOBAL_CONFIGURATION_TYPES "")
+
+IF(WINDOWS)
+    # Compile Definitions
+    SET(GLOBAL_COMPILE_DEFINITIONS)
+    SET(GLOBAL_COMPILE_DEFINITIONS_DEBUG)
+    SET(GLOBAL_COMPILE_DEFINITIONS_RELEASE)
+
+    # Compile Options
+    SET(GLOBAL_COMPILE_OPTIONS)
+    SET(GLOBAL_COMPILE_OPTIONS_DEBUG)
+    SET(GLOBAL_COMPILE_OPTIONS_RELEASE)
+
+    # Link Flags
+    SET(GLOBAL_LINK_FLAGS)
+    SET(GLOBAL_LINK_FLAGS_DEBUG)
+
+    IF(WINDOWS_BUILD_32)
+        SET(__PLATFORM_GLOBAL_LINK_RELEASE)
+    ENDIF()
+
+    IF(WINDOWS_BUILD_64)
+        SET(__PLATFORM_GLOBAL_LINK_RELEASE)
+    ENDIF()
+
+    SET(GLOBAL_LINK_FLAGS_RELEASE ${__PLATFORM_GLOBAL_LINK_RELEASE})
+ENDIF()
+
+IF(MAC)
+    # TODO
+ENDIF()
+
+IF(UNIX)
+    #TODO
+ENDIF()
+
+ADD_CONFIG("Debug" "d")
+ADD_CONFIG("Release" "")
+
+SET(GLOBAL_OUTPUT_BINDIR ${PROJECT_BINARY_DIR}/bin)
+SET(GLOBAL_OUTPUT_LIBDIR ${PROJECT_BINARY_DIR}/lib)
+
+SET(GLOBAL_INSTALL_INCDIR include)
+SET(GLOBAL_INSTALL_BINDIR bin)
+
+IF(WINDOWS)
+    SET(GLOBAL_INSTALL_BINDIR bin)
+    SET(GLOBAL_INSTALL_ARCHIVEDIR bin)
+    # TODO
+ENDIF()
+
+OPTION(GLOBAL_DYNAMIC "Set to ON to build all library for dynamic linking. Use OFF for static linking." ON)
