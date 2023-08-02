@@ -1,12 +1,12 @@
 #[=======================================================================[.rst:
-Description:
-ZS_WINDOWS
-ZS_WINDOWS_BUILD_32
-ZS_WINDOWS_BUILD_64
-ZS_MAC
-Z S_MAC_BUILD_XX
-ZS_UNIX
-ZS_UNIX_BUILD_XX
+    Description:
+    ZS_WINDOWS
+    ZS_WINDOWS_BUILD_32
+    ZS_WINDOWS_BUILD_64
+    ZS_MAC
+    Z S_MAC_BUILD_XX
+    ZS_UNIX
+    ZS_UNIX_BUILD_XX
 #]=======================================================================]
 SET(WINDOWS 0)
 SET(WINDOWS_BUILD_32 0)
