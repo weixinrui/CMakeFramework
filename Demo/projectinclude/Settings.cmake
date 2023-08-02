@@ -1,0 +1,224 @@
+IF(ZS_WINDOWS)
+    # COMPILE DEFINITIONS
+    SET(GLOBAL_COMPILE_DEFINITIONS
+        OS_WIN32
+        WIRVER=0x0601
+        _WIN32_WINNT=0x0601
+        PSAPI_VERSION=1
+        _AFXDLL
+        _WINDOWS
+        _WINDLL
+        _USRDLL
+        _WINSOCK_DEPRECATED_NO_WARNINGS
+        _CRT_SECURE_NO_WARNINGS
+        _CRT_NONSTDC_NO_WARNINGS
+        WIN32_LEAN_AND_MEAN
+        NO_WARN_MBCS_MFC_DEPRECATION
+        LI_FLOAT_IS_DOUBLE
+        LI_MACROS
+        LI_NO_COMPILER_CHECK
+        _TOOLKIT_IN_DLL_
+        _SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS
+        # DUMMY_ZS_PLATFORM_WINDOWS
+        UNICODE
+        _UNICODE
+        ZW_NO_USE_QT
+        QT_DLL
+        QT_CORE_LIB
+        QT_GUI_LIB
+        QT_NO_CAST_FROM_ASCII
+        QT_NO_CAST_TO_ASCII
+        QT_NO_CAST_FROM_BYTEARRAY
+    )
+
+    SET(GLOBAL_COMPILE_DEFINITIONS_DEBUG
+        ZW_TRACY_DEBUG
+        _DEBUG
+    )
+
+    SET(GLOBAL_COMPILE_DEFINITIONS_RELEASE
+        NDEBUG
+        MEM_DEBUG
+        QT_NO_DEBUG
+    )
+
+    SET(GLOBAL_COMPILE_DEFINITIONS_RELWITHDEBINFO 
+        ${GLOBAL_COMPILE_DEFINITIONS_RELEASE}
+        ZW_RELEASE_WITH_DEBUG_INFO
+        ZW_TRACY_DEBUG 
+    )
+
+    SET(GLOBAL_COMPILE_DEFINITIONS_RELWITHPERFPROFILE
+        ${GLOBAL_COMPILE_DEFINITIONS_RELEASE}
+        ZW_RELEASE_WITH_PERFORM_PROFILE
+        ZW_TRACY_DEBUG
+        ZW_TRACY_CALLSTACK=20
+    )
+
+    # COMPILE_ OPTIONS 
+    SET(GLOBAL_COMPILE_OPTIONS 
+        /MP
+        /permissive-
+        /std:c++14
+        /FC
+        /GR-
+        /utf-8
+        /EHa
+        "/wd 4290"
+        "/wd 4996"
+        "/wd 4812"
+        "/wd 4819"
+        "/wd 4251"
+        "/wd 4275"
+        "/we 4715"
+        "/we 4244"
+        "/we 4553"
+        "/we 4002"
+        "/we 4090"
+        "/we 4554"
+        "/we 4700"
+        "/we 4150"
+        "/we 4805"
+        "/we 4541"
+        "/we 4018"
+        "/we 4099"
+        "/we 4101"
+        "/we 4130"
+        "/we 4172"
+        "/we 4189"
+        "/we 4238"
+        "/we 4245"
+        "/we 4309" 
+        "/we 4389"
+        "/we 4456"
+        "/we 4457"
+        "/we 4471"
+        "/we 4701"
+        "/we 4703"
+        "/we 4828"
+        "/we 4840"
+        "/we 4804"
+    )
+
+    SET(GLOBAL_COMPILE_OPTIONS_DEBUG
+        /ZI
+        /JMC
+        /W4
+        /GT
+        /GF-
+        /fp:except-
+    )
+    SET(GLOBAL_COMPILE_OPTIONS_RELEASE
+        /Zi
+        /W3
+        /Ob1
+        /Oi
+        /Ot
+        /GL
+        /GF
+        /Gy
+    )
+    SET(GLOBAL_COMPILE_OPTIONS_RELWITHDEBINFO
+        ${GLOBAL_COMPILE_OPTIONS_RELEASE}
+    )
+    SET(GLOBAL_COMPILE_OPTIONS_RELWITHPERFPROFILE
+        ${GLOBAL_COMPILE_OPTIONS_RELEASE}
+    )
+
+    # LINK_FLAGS
+    SET(GLOBAL_LINK_FLAGS
+        /SUBSYSTEM:WINDOWS
+        /LARGEADDRESSAWARE
+    ) 
+
+    SET(GLOBAL_LINK_FLAGS_DEBUG
+        /INCREMENTAL
+        /MAP
+        /MAPINFO:EXPORTS
+        /SAFESEH:NO_SONAME
+    )
+    
+    IF(WINDOWS_BUILD_32)
+        SET(PLATFORM_GLOBAL_LINK_RELEASE
+            /SAFESEH
+        ) 
+    ENDIF() 
+
+    IF(WINDOWS_BUILD_64)
+        SET(PLATFORM_GLOBAL_LINK_RELEASE) 
+    ENDIF() 
+
+    OPTION(RELEASE_BUILD_DEBUG_INFO "Set to ON to generate PDB files on RELEASE mode. Use OFF to avoid generating PDB files." ON) 
+
+    SET(GLOBAL_LINK_FLAGS_RELEASE_SPECIAL)
+    IF(RELEASE_BUILD_DEBUG_INFO)
+        SET(GLOBAL_LINK_FLAGS_RELEASE_SPECIAL
+            /DEBUG
+        )
+    ENDIF() 
+
+    SET(GLOBAL_LINK_FLAGS_RELEASE_COMMON
+        /INCREMENTAL:NO
+        /LTCG:incremental
+        /OPT:ICF
+        /OPT:REF
+        ${PLATFORM_GLOBAL_LINK_RELEASE}  
+    )
+    SET(GLOBAL_LINK_FLAGS_RELEASE
+        ${GLOBAL_LINK_FLAGS_RELEASE_COMMONI}
+        ${GLOBAL_LINK_FLAGS_RELEASE_SPECIAL}
+    )
+
+    SET(GLOBAL_LINK_FLAGS_RELWITHDEBINFO
+        ${GLOBAL_LINK_FLAGS_RELEASE_COMMON}
+        /DEBUG
+    ) 
+
+    SET(GLOBAL_LINK_FLAGS_RELWITHPERFPROFILE
+        ${ZS_GLOBAL_LINK_FLAGS_RELEASE_COMMON}
+        /DEBUG
+    )
+ENDIF()
+
+IF(MAC)
+    SET(GLOBAL_COMPILE_DEFINITIONS
+        DUMMY_ZS_PLATFORM_MAC
+    ) 
+    ZS_TODO()
+ENDIF()
+
+IF(UNIX)
+    SET(GLOBAL_COMPILE_DEFINITIONS
+        DUMMY_ZS_PLATFORM_UNIX
+    ) 
+    ZS_TOD0()
+ENDIF()
+
+SET(CMAKE_MAP_IMPORTED_CONFIG_RELWITHDEBINFO "RelWithDebInfo;Release;")
+SET(CMAKE_MAP_IMPORTED_CONFIG_RELWITHPERFPROFILE "RelWithDebInfo;Release;")
+
+ADD_CONFIG("Debug" "d")
+ADD_CONFIG("Release" "")
+ADD_CONFIG("RelWithDebInfo" "")
+ADD_CONFIG("RelWithPerfProfile" "")
+
+SET(GLOBAL_OUTPUT_BINDIR ${PROJECT_BINARY_DIR}/Out/$<CONFIG>/bin)
+SET(GLOBAL_OUTPUT_LIBDIR ${PROJECT_BINARY_DIR}/Out/$<CONFIG>/lib)
+
+SET(GLOBAL_INSTALL_INCDIR include)
+SET(GLOBAL_INSTALL_BINDIR bin)
+SET(GLOBAL_INSTALL_CMAKE cmake)
+
+OPTION(ZW_UTDATE_PKG "$(ZW_UPDATE_PKG)" OFF)
+OPTION(ZW_FASTBUILD_ENABLE "${ZW_FASTBUILD_ENABLE}" OFF) 
+
+IF(WINDOWS)
+    SET(ZS_GLOBAL_INSTALL_LIBDIR bin)
+    SET(ZS_GLOBAL_INSTALL_ARCHIVEDIR lib)
+ELSE(WINDOWS)
+    SET(ZS_GLOBAL_INSTALL_LIBDIR lib)
+    SET(ZS_GLOBAL_INSTALL_ARCHIVEDIR lib)
+ENDIF()
+
+OPTION(GLOBAL_DYNAMIC "Set to On to build all library for dynamic linking. Use OFF for static linking" ON) 
+
